@@ -20,5 +20,5 @@ Based on jquery(ui) using the widget pattern and qunit tests.
 
 ### Article
 
-See full article here at <a href="http://minimul.com/simple-way-to-upload-multiple-files.html">"http://minimul.com/simple-way-to-upload-multiple-files.html</a>
+See full article here at <a href="http://minimul.com/simple-way-to-upload-multiple-files.html">http://minimul.com/simple-way-to-upload-multiple-files.html</a>
 
