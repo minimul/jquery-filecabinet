@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>jQuery UI MultiSelect Widget Unit Tests</title>
+<link rel="stylesheet" href="qunit.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" type="text/css" media="screen" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.js"></script>
+<script type="text/javascript" src="../src/jquery.filecabinet.js"></script>
+<script type="text/javascript" src="qunit.js"></script>
+<!-- <script type="text/javascript" src="core.js"></script> -->
+<!-- <script type="text/javascript" src="options.js"></script> -->
+<!-- <script type="text/javascript" src="events.js"></script> -->
+<!-- <script type="text/javascript" src="methods.js"></script> -->
+<!-- <script type="text/javascript" src="filter.js"></script> -->
+<style>
+    #add-attachment { text-decoration:underline;cursor:pointer; }
+
+    .filecabinet-container .row { margin:5px 0px; }
+    /* width of 75px keeps the input:file as small as possible */
+    .filecabinet-container .upload-field { position:relative;width:75px;opacity:0;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0); }
+    .filecabinet-container table { width:70%; }
+    .filecabinet-container table .file-row { text-align:left;width:20%; }
+    .filecabinet-container table .file-display { text-align:left;width:55%; }
+    .filecabinet-container table .file-type { text-align:left;width:20%; }
+    .filecabinet-container table .file-remove { text-align:center;width:5%; }
+    #upload { margin-top:50px; }
+</style>
+</head>
+
+<body>
+<h1 id="qunit-header">UI Filecabinet Unit Tests</h1>
+<h2 id="qunit-banner"></h2>
+<h2 id="qunit-userAgent"></h2>
+<ol id="qunit-tests"></ol>
+
+<div id="parent-container">
+  <form action="/upload-test" method="post">
+      <span id="add-attachment"></span>
+      <button id="upload" type="submit">Upload</button>
+  </form>
+</div>
+
+
+<script>
+
+  $(document).ready(function(){
+    
+    var body = $(document.body);
+    var el;
+
+    function base(){
+      return $("#add-attachment").filecabinet('widget');
+    }
+
+    function paren(){
+      return el.closest('#parent-container'); 
+    }
+
+    function click_add_attachment(){
+      return paren().find('#add-another-row a').trigger('click');
+    }
+
+    module("core");
+    
+    test("create", function(){
+        expect(4);
+        el = $("#add-attachment").filecabinet(); 
+        ok( base(), 'filecabinet has been set' );
+        ok( body.find('.filecabinet'), 'div.filecabinet has been created' );
+        ok( (ada = body.find('#add-another-row')), '.add-another-row has been created' );
+        ok( ada.find('a span:last').is('.ui-button-text'), 'ui.button has been created' );
+        el.filecabinet('destroy');
+    });
+    
+    test("add a row", function(){
+        expect(1);
+        el = $("#add-attachment").filecabinet(); 
+        click_add_attachment();
+        ok( paren().find('.filecabinet-container div:first').is('.row'), '.filecabinet .row is present' );
+        el.filecabinet('destroy');
+    });	
+
+    test('remove a row', function(){
+        expect(1);
+        el = $("#add-attachment").filecabinet(); 
+        paren().find('.file-remove a').trigger('click')
+        ok( paren().find('.filecabinet-container .row').next().not('table'), '.filecabinet table should not be preset' );
+        el.filecabinet('destroy');
+      });
+
+    // need to test numeric naming
+
+    module("methods");
+
+    module("options");
+
+    test("add row class name",function(){
+      expect(1);
+      var className = 'test-class-row';
+      el = $("#add-attachment").filecabinet({ addRowClassName: className }); 
+      click_add_attachment();
+      ok( paren().find('.filecabinet-container div:first').is('.' + className), 'The row div has a className of "' + className + '"' );
+      el.filecabinet('destroy');
+    });
+
+    test("add link options",function(){
+      expect(3);
+      var title = 'Add a file',
+          className = 'test-class';
+      el = $("#add-attachment").filecabinet({ linkContent: title, linkTitle: title, linkClassName: className }); 
+      var aRow = paren().find('#add-another-row');
+      ok( aRow.find('a:first').is('.' + className), 'anchor tag should have class name of ' + className );
+      equals( aRow.find('.ui-button-text').html(),title, 'Title should equal ' + title );
+      equals( aRow.find('a:first').attr('title'), title, 'anchor tag title should equal ' + title );
+      el.filecabinet('destroy');
+    });
+
+    test("turn off numeric naming",function(){
+      expect(1);
+      el = $("#add-attachment").filecabinet({ numericNaming: false }); 
+      click_add_attachment();
+      equals( paren().find('input:file').attr('name'), 'userfile[]', 'input file tag name should be userfile[]' );
+      el.filecabinet('destroy');
+    });
+
+  });	
+</script>
+
+</body>
+</html>

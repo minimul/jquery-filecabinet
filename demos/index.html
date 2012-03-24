@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>jQuery UI Filecabinet Widget Demo</title>
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/ui-lightness/jquery-ui.css" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="../src/jquery.filecabinet.js"></script>
+<style>
+
+    #add-attachment { text-decoration:underline;cursor:pointer; }
+
+    .filecabinet-container .row { margin:5px 0px; }
+    /* width of 75px keeps the input:file as small as possible */
+    .filecabinet-container .upload-field { position:relative;width:75px;opacity:0;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0); }
+    .filecabinet-container table { width:70%; }
+    .filecabinet-container table .file-row { text-align:left;width:20%; }
+    .filecabinet-container table .file-display { text-align:left;width:55%; }
+    .filecabinet-container table .file-type { text-align:left;width:20%; }
+    .filecabinet-container table .file-remove { text-align:center;width:5%; }
+
+    button[type=submit] { margin-top:25px; }
+
+</style>
+</head>
+<body>
+  <h2>File input</h2>
+  <div id="parent-container">
+    <form action="/upload-test" method="post">
+        <span id="add-attachment"></span>
+        <button type="submit">Upload</button>
+    </form>
+  </div>
+
+  <script>
+    $(document).ready(function(){
+        $('#add-attachment').filecabinet();
+        $('button[type=submit]').button();
+        /*
+        $('#add-attachment').bind('filecabinetadded',function(event,obj){
+            var select = ['<td class="file-type"><select name="doctype[]">']; 
+            select.push('<option value="">-Select Document Type-</option>');
+            select.push('<option value="Doc 1">Document 1</option>');
+            select.push('<option value="Doc 2">Document 2</option>');
+            select.push('<option value="Doc 3">Document 3</option>');
+            select.push('</select></td>');
+            var selectfield = $(select.join("\n"));
+            obj.addRow.find('.file-display').after(selectfield);
+        });
+        */
+    });
+  </script>
+</body>
+</html>
